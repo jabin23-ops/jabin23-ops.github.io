@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>Operations Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #131313;
+    --surface-2: #1a1a1a;
+    --border: #232323;
+    --border-hover: #3a3a3a;
+    --text: #ededed;
+    --text-dim: #8a8a8a;
+    --text-faint: #555;
+    --accent: #ff6b1a;
+    --accent-soft: rgba(255, 107, 26, 0.08);
+    --green: #4ade80;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(255, 107, 26, 0.06), transparent 50%),
+      radial-gradient(circle at 85% 100%, rgba(255, 107, 26, 0.03), transparent 50%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent) 0%, #c4380a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    letter-spacing: -0.5px;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brand-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .meta {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+  .meta .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-dim);
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Greeting */
+  .greeting {
+    margin-bottom: 48px;
+  }
+
+  .greeting h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 6vw, 44px);
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+
+  .greeting h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .greeting p {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 480px;
+    line-height: 1.5;
+  }
+
+  /* Section label */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-faint);
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-label .count {
+    color: var(--text-dim);
+  }
+
+  /* Tools grid */
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .tool {
+    position: relative;
+    display: block;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    min-height: 180px;
+  }
+
+  .tool::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent-soft);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+  }
+
+  .tool:hover, .tool:active {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    background: var(--surface-2);
+  }
+
+  .tool:hover::before {
+    opacity: 1;
+  }
+
+  .tool-num {
+    position: absolute;
+    top: 20px;
+    right: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 1px;
+  }
+
+  .tool-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  .tool-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .tool-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.4px;
+    margin-bottom: 6px;
+  }
+
+  .tool-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .tool-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    transition: color 0.25s, transform 0.25s;
+  }
+
+  .tool:hover .tool-arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  /* Add slot */
+  .add-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    color: var(--text-faint);
+    text-align: center;
+    min-height: 180px;
+  }
+
+  .add-slot .plus {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 8px;
+    color: var(--text-faint);
+  }
+
+  .add-slot-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  /* Footer */
+  .footer {
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .footer-text em {
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Staggered entry */
+  .tool, .add-slot {
+    opacity: 0;
+    animation: rise 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .tool:nth-child(1) { animation-delay: 0.1s; }
+  .tool:nth-child(2) { animation-delay: 0.2s; }
+  .tool:nth-child(3) { animation-delay: 0.3s; }
+  .add-slot { animation-delay: 0.4s; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 24px 16px 60px; }
+    .header { margin-bottom: 32px; }
+    .greeting { margin-bottom: 36px; }
+    .tools { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">J</div>
+        <div class="brand-text">
+          <div class="brand-name">Operations Hub</div>
+          <div class="brand-sub">Jabin · Internal Tools</div>
+        </div>
+      </div>
+      <div class="meta">
+        <div id="date"></div>
+        <div class="status"><span class="dot"></span><span>All systems live</span></div>
+      </div>
+    </header>
+
+    <section class="greeting">
+      <h1 id="greet">Good <em>evening</em>.<br>Pick your tool.</h1>
+      <p>Quick access to every internal tool. Bookmark this page on your home screen and you've got the lot in one tap.</p>
+    </section>
+
+    <div class="section-label">
+      <span>Tools</span>
+      <span class="count">03 active</span>
+    </div>
+
+    <div class="tools">
+
+      <a class="tool" href="https://jabin23-ops.github.io/tyre-stock/">
+        <span class="tool-num">01</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="3.5"/>
+            <line x1="12" y1="3" x2="12" y2="8.5"/>
+            <line x1="12" y1="15.5" x2="12" y2="21"/>
+            <line x1="3" y1="12" x2="8.5" y2="12"/>
+            <line x1="15.5" y1="12" x2="21" y2="12"/>
+          </svg>
+        </div>
+        <div class="tool-title">Tyre Stock</div>
+        <div class="tool-desc">Check live stock levels and inventory across sizes and brands.</div>
+        <span class="tool-arrow">Open <span>→</span></span>
+      </a>
+
+      <a class="tool" href="https://jabin23-ops.github.io/debtor-followup/">
+        <span class="tool-num">02</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7h18M3 7l2-3h14l2 3M3 7v12a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V7"/>
+            <path d="M9 12h6M9 16h4"/>
+          </svg>
+        </div>
+        <div class="tool-title">Debtor Follow-up</div>
+        <div class="tool-desc">Track outstanding receivables and follow up with customers.</div>
+        <span class="tool-arrow">Open <span>→</span></span>
+      </a>
+
+      <a class="tool" href="https://jabin23-ops.github.io/creditor-details/">
+        <span class="tool-num">03</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="13" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+            <line x1="6" y1="15" x2="10" y2="15"/>
+            <circle cx="17" cy="15" r="1.2"/>
+          </svg>
+        </div>
+        <div class="tool-title">Creditor Details</div>
+        <div class="tool-desc">Manage supplier payments and dues.</div>
+        <span class="tool-arrow">Open <span>→</span></span>
+      </a>
+
+      <div class="add-slot">
+        <div class="plus">+</div>
+        <div class="add-slot-text">Next tool</div>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <div class="footer-text">jabin23-ops</div>
+      <div class="footer-text"><em>Built one piece at a time.</em></div>
+    </footer>
+
+  </div>
+
+<script>
+  // Date
+  const now = new Date();
+  const opts = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+  document.getElementById('date').textContent = now.toLocaleDateString('en-GB', opts).toUpperCase();
+
+  // Greeting by hour
+  const h = now.getHours();
+  let part = 'evening';
+  if (h < 5) part = 'night';
+  else if (h < 12) part = 'morning';
+  else if (h < 17) part = 'afternoon';
+  else if (h < 21) part = 'evening';
+  else part = 'night';
+  document.getElementById('greet').innerHTML = `Good <em>${part}</em>.<br>Pick your tool.`;
+</script>
+</body>
+</html>
